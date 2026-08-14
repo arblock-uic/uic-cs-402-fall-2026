@@ -1,14 +1,14 @@
 # Running the Autograder
-You may choose to run the provided autograder to get an idea of how your code will perform when I run the autograder.
-This readme contains instructions for setting up and running the autograder.
+You may choose to run the provided Autograder to get an idea of how your code will perform when I run the Autograder.
+This README contains instructions for setting up and running the Autograder.
 
 **Important**: this is optional and not required for you to do your project.
 As such, I will provide limited support if you run into issues running the Autograder.
 
 ## Setting up the Autograder
-The provided `Dockerfile` will be used to build the autograder image.
+The provided `Dockerfile` will be used to build the Autograder image.
 It appears at the root directory of this repository; see the below screenshot.
-We will use this `Dockerfile` to build the autograder image.
+We will use this `Dockerfile` to build the Autograder image.
 
 ![Screenshot of root directory structure of this repository.](./root-dir-struct.png)
 
@@ -49,7 +49,7 @@ You should be met with something like the screenshot below.
 ![Screenshot of Podman Desktop.](podman-desktop.png)
 
 3. Make sure that the Podman Machine is running.
-Click on the bottom left tab labeled "Settings" (with the gear icon in the above screenshot), then clikc "Resources".
+Click on the bottom left tab labeled "Settings" (with the gear icon in the above screenshot), then click "Resources".
 See the screenshot below for reference.
 
 ![Screenshot of Podman Desktop settings > resources tab.](podman-settings.png)
@@ -86,41 +86,53 @@ If not, you need the following directory structure.
 
 - `repository_root/`
     - `Dockerfile`
-    - `project-2/`
-        - `results/`
-        - `startup/`
-            - `docker_run_grader.sh`
-            - `podman_run_grader.sh`
-        - `tests/`
-            - `config.toml`
-            - `extra/`
-            - `testcases/`
+    - `project-<num>/`
+        - `Firstname_Lastname_project<num>.cpp`
+        - `Firstname_Lastname_project<num>.h`
+        - `autograder/`
+            - `results/`
+            - `startup/`
+                - `docker_run_grader.sh`
+                - `podman_run_grader.sh`
+            - `tests/`
+                - `config.toml`
+                - `extra/`
+                - `testcases/`
 
 Important to add are the `results`, `startup`, and `tests` directories with the appropriate structure.
 Inside `startup`, there are two scripts, each one is to run the Autograder using either Docker or Podman (depending on how you set up the Autograder).
-Inside `tests`, there is a `config.toml` file which controls how the Autograder runs testcases, including the weight of each test case, the total number of points, etc.
+Inside `tests`, there is a `config.toml` file which controls how the Autograder runs test cases, including the weight of each test case, the total number of points, etc.
 Inside `testcases`, there are `.cpp` files which will test your code.
 Finally, `results` is where the Autograder will output your test results.
 
 ## Running the Autograder
 Running the Autograder is simple.
 
-1. Copy any `.h` files you are using from the `project-2/` directory to the `project-2/tests/extra/` directory. 
+1. Copy any `.h` files you are using from the `project-<num>/` directory to the `project-<num>/autograder/tests/extra/` directory. 
 This is needed for the Autograder to work correctly.
-Note this includes `Firstname_Lastname_project2.h`.
+Note this includes `Firstname_Lastname_project<num>.h`.
 
-2. From the `project-2` directory, run `./startup/docker_run_grader.sh` or `./startup.podman_run_grader.sh`, depending on if you built the Autograder with Docker or Podman.
-It is important that you do not `cd` into the `startup` directory and run the Autograder from there; you must run it from the `project-2` directory for the provided scripts to work properly.
+2. Within the `autograder` directory, run `./startup/docker_run_grader.sh` or `./startup.podman_run_grader.sh`, depending on if you built the Autograder with Docker or Podman.
+It is important that you do not `cd` into the `startup` directory and run the Autograder from there; you must run it from the `autograder` directory for the provided scripts to work properly.
 
-3. If everything works, the Autograder will print its results to your terminal, as well as output the results in `project-2/results/Firstname_Lastname_project2.cpp`.
+3. If everything works, the Autograder will print its results to your terminal, as well as output the results in `project-2/autograder/results/Firstname_Lastname_project<num>.cpp`.
 
 ## Writing more test cases for the Autograder
 See [the Autograder documentation](https://zmievsa.github.io/autograder/#/?id=writing-testcases) for how to write test cases.
-The [GitHub](https://github.com/zmievsa/autograder/) page for the Autograder also has testcase examples (under the `examples` directory).
+The [GitHub](https://github.com/zmievsa/autograder/) page for the Autograder also has test case examples (under the `examples` directory).
 
-As a quick example, if you want to test your `a-star` algorithm, you can go about it as follows.
-1. In `tests/testcases`, create a file called `a-star.cpp`.
-2. In `config.toml`, increase the total possible points by 25 (since the `a-star` algorithm is worth 25 points in this assignment).
-Additionally, add "'a-star.cpp' = 0.25" to the `TESTCASE_WEIGHT` array.
-3. Now in `a-star.cpp`, make sure you include any libraries needed to construct testcases. You also will want to add any struct declarations here to make your life easy, as well as forward declare your a-star algorithm (see `topological-sort.cpp` as an example).
-4. Write test cases for your `a-star` algorithm. You can compute a score and divide it by a total score (as in the current test cases), or you can do a bunch of test cases and just call `PASS()` if they all pass, or `FAIL()` if they don't.
+Here is an example of how to add your own test cases.
+Suppose you've been asked to implement a function named `foo` that is worth 25 points.
+1. In `autograder/tests/testcases`, create a file called `foo.cpp`.
+2. In `config.toml`, increase the total possible points by 25 (since the `foo` function is worth 25 points in this example).
+Additionally, add `'foo.cpp' = 0.25` to the `TESTCASE_WEIGHT` array.
+3. Now in `foo.cpp`, make sure you include any libraries needed to construct test cases. 
+You also will want to add any struct declarations here to make your life easy, as well as forward declare your `foo` function so that the compiler is aware this function exists.
+4. Write test cases for your `foo` algorithm. 
+You can score the test cases as follows.
+    a. Using the provided `PASS()` and `FAIL()` functions.
+    For example, you write 5 tests, and you pass if and only if all 5 are successful, calling `PASS()`, or calling `FAIL()` if even one test fails.
+    b. Using the provided `RESULT(double res)` function.
+    This function expects a double as input, as a score out of 100. 
+    So, for example, you can create 3 test cases, 2 of which are worth 15 points and the last one is worth 25 (for a total of 55 points).
+    If you scored 37 out of 55, you would call `RESULT(100*(score / total_possible))`; in this example, this would be `RESULT(100*(37/55))`.
