@@ -1,0 +1,16 @@
+*.b
+.clangd
+autograder/results/*.txt
+autograder/results/*.cpp
+autograder/tests/extra/*.h
+autograder/ec-tests/
+autograder/ec-results/
+autograder/ec-results/
+autograder/startup/podman_run_ec.sh
+
+
+## Do not ignore my files
+!autograder/results/Alex_Block_project1.cpp
+!autograder/results/Alex_Block.txt
+!autograder/tests/extra/Alex_Block_project1.h
+!autograder/tests/extra/testing.*
