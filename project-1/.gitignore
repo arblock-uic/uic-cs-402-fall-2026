@@ -2,7 +2,9 @@
 .clangd
 autograder/results/*.txt
 autograder/results/*.cpp
+autograder/*.cpp
 autograder/tests/extra/*.h
+autograder/tests/extra/*.cpp
 autograder/ec-tests/
 autograder/ec-results/
 autograder/ec-results/
