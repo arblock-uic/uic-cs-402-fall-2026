@@ -111,9 +111,10 @@ Running the Autograder is simple.
 1. Copy any `.h` files you are using from the `project-<num>/` directory to the `project-<num>/autograder/tests/extra/` directory. 
 This is needed for the Autograder to work correctly.
 Note this includes `Firstname_Lastname_project<num>.h`.
+You will also need to copy `Firstname_Lastname_project<num>.cpp` to the `project-<num>/autograder/` directory, as this is where the autograder script will look for your `.cpp` file.
 
-2. Within the `autograder` directory, run `./startup/docker_run_grader.sh` or `./startup.podman_run_grader.sh`, depending on if you built the Autograder with Docker or Podman.
-It is important that you do not `cd` into the `startup` directory and run the Autograder from there; you must run it from the `autograder` directory for the provided scripts to work properly.
+2. Within the `autograder` directory, run `./startup/docker_run_grader.sh` or `./startup/podman_run_grader.sh`, depending on if you built the Autograder with Docker or Podman.
+It is important that you do not `cd` into the `startup` directory and run the Autograder from there; you must run the scripts from the `autograder` directory for them to work properly.
 
 3. If everything works, the Autograder will print its results to your terminal, as well as output the results in `project-2/autograder/results/Firstname_Lastname_project<num>.cpp`.
 
@@ -130,9 +131,9 @@ Additionally, add `'foo.cpp' = 0.25` to the `TESTCASE_WEIGHT` array.
 You also will want to add any struct declarations here to make your life easy, as well as forward declare your `foo` function so that the compiler is aware this function exists.
 4. Write test cases for your `foo` algorithm. 
 You can score the test cases as follows.
-    a. Using the provided `PASS()` and `FAIL()` functions.
+    1. Using the provided `PASS()` and `FAIL()` functions.
     For example, you write 5 tests, and you pass if and only if all 5 are successful, calling `PASS()`, or calling `FAIL()` if even one test fails.
-    b. Using the provided `RESULT(double res)` function.
+    2. Using the provided `RESULT(double res)` function.
     This function expects a double as input, as a score out of 100. 
     So, for example, you can create 3 test cases, 2 of which are worth 15 points and the last one is worth 25 (for a total of 55 points).
     If you scored 37 out of 55, you would call `RESULT(100*(score / total_possible))`; in this example, this would be `RESULT(100*(37/55))`.
