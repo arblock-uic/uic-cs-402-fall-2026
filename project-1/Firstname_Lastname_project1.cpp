@@ -304,10 +304,104 @@ int main() {
 
 
 
-
-
-
     /**** END STUDENT CODE ****/
+
+    /***** DO NOT MODIFY BELOW THIS LINE *****/
+    /*** INSTRUCTIONS ***
+     *
+     * Before submitting your code: 
+     *   - remove all code within the main function that you have written above the `do-not-modify` line;
+     *   - uncomment all lines below that begin with "//".
+     *   - NOTE: you can uncomment the code below if you are testing your code with the autograder. The 
+     *     autograder will throw an error if you run it without uncommenting the code.
+     */
+
+    //vector<int> test_list {1, 2, 3, 4, 5};
+    //vector<unsigned int> test_list2 {1, 2, 3, 4, 5};
+    //vector<StableChar> test_list3  {};
+    //vector<StableInt> test_list4 {};
+    //vector<StableString> test_list5 {};
+    //vector<short> test_list6  {};
+    //vector<unsigned short> test_list7  {};
+    //vector<long> test_list8  {};
+    //vector<unsigned long> test_list9  {};
+
+
+    //insertion_sort(test_list);
+    //insertion_sort(test_list2);
+    //insertion_sort(test_list3);
+    //insertion_sort(test_list4);
+    //insertion_sort(test_list5);
+    //insertion_sort(test_list6);
+    //insertion_sort(test_list7);
+    //insertion_sort(test_list8);
+    //insertion_sort(test_list9);
+
+
+    //selection_sort(test_list);
+    //selection_sort(test_list2);
+    //selection_sort(test_list3);
+    //selection_sort(test_list4);
+    //selection_sort(test_list5);
+    //selection_sort(test_list6);
+    //selection_sort(test_list7);
+    //selection_sort(test_list8);
+    //selection_sort(test_list9);
+
+    //bubble_sort(test_list);
+    //bubble_sort(test_list2);
+    //bubble_sort(test_list3);
+    //bubble_sort(test_list4);
+    //bubble_sort(test_list5);
+    //bubble_sort(test_list6);
+    //bubble_sort(test_list7);
+    //bubble_sort(test_list8);
+    //bubble_sort(test_list9);
+
+
+    //merge_sort(test_list);
+    //merge_sort(test_list2);
+    //merge_sort(test_list3);
+    //merge_sort(test_list4);
+    //merge_sort(test_list5);
+    //merge_sort(test_list6);
+    //merge_sort(test_list7);
+    //merge_sort(test_list8);
+    //merge_sort(test_list9);
+
+    //quicksort(test_list);
+    //quicksort(test_list2);
+    //quicksort(test_list3);
+    //quicksort(test_list4);
+    //quicksort(test_list5);
+    //quicksort(test_list6);
+    //quicksort(test_list7);
+    //quicksort(test_list8);
+    //quicksort(test_list9);
+
+    //my_hybrid_sort(test_list);
+    //my_hybrid_sort(test_list2);
+    //my_hybrid_sort(test_list3);
+    //my_hybrid_sort(test_list4);
+    //my_hybrid_sort(test_list5);
+    //my_hybrid_sort(test_list6);
+    //my_hybrid_sort(test_list7);
+    //my_hybrid_sort(test_list8);
+    //my_hybrid_sort(test_list9);
+
+    //binary_radix_sort(test_list);
+    //binary_radix_sort(test_list2);
+    //binary_radix_sort(test_list6);
+    //binary_radix_sort(test_list7);
+    //binary_radix_sort(test_list8);
+    //binary_radix_sort(test_list9);
+
+    //radix_sort(test_list);
+    //radix_sort(test_list2);
+    //radix_sort(test_list6);
+    //radix_sort(test_list7);
+    //radix_sort(test_list8);
+    //radix_sort(test_list9);
 
 
     return 0;
