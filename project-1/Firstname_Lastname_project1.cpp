@@ -237,7 +237,7 @@ void my_hybrid_sort(vector<T> &list, bool descending) {
 
 /* Binary Radix Sort
  *
- * 20 points
+ * 20 points, EXTRA CREDIT
  *
  * Algorithm:
  *
@@ -248,6 +248,10 @@ void my_hybrid_sort(vector<T> &list, bool descending) {
  *                      - (unsigned) short int
  *                      - (unsigned) int
  *                      - (unsigned) long int
+ *
+ * Additional Information:
+ *   - If you are enrolled in the undergraduate section of this course, this
+ *     function is optional and worth extra credit.
  */
 //template<class T>
 //concept Integral = std::is_integral<T>::value;
@@ -279,14 +283,6 @@ void binary_radix_sort(vector<T> &list, bool descending) {
  *
  *   bool decending: if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default).
- *
- *
- * Additional Information:
- *   - If you are enrolled in the graduate section of this course, you MUST
- *     implement this function (i.e., it counts towards your total grade).
- *
- *   - If you are enrolled in the undergraduate section of this course, this
- *     function is optional and worth extra credit.
  *
  */
 template<Integral T>
