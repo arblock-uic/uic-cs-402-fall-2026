@@ -41,7 +41,7 @@ As mentioned above, the `testing.h/.cpp` files have various functions to help te
 
 ### Submission
 Your submission will be a GitHub repository. You have 2 options for this.
-1. Add me as a collaborator to your GitHub repository. My username is `alexander-r-block`. This option works if your repository is public or private.
+1. Add me as a collaborator to your GitHub repository. My username is `arblock-uic`. This option works if your repository is public or private.
 2. Send me a link to your repository. Note this only works if you make the repository public. 
 
 Note that once you have added me to your repository/sent me the repository link, I will be able to see your future projects as well, so you do not need to repeat this. Moving forward, project submissions will consist of me simply checking your GitHub repository for the last commit before the project deadline. I will also put in place a way for you to submit your project late should you wish to do so.
