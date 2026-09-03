@@ -9,6 +9,8 @@ autograder/ec-tests/
 autograder/ec-results/
 autograder/ec-results/
 autograder/startup/podman_run_ec.sh
+*.cpp
+*.h
 
 
 ## Do not ignore my files
@@ -16,3 +18,4 @@ autograder/startup/podman_run_ec.sh
 !autograder/results/Alex_Block.txt
 !autograder/tests/extra/Alex_Block_project1.h
 !autograder/tests/extra/testing.*
+!testing.*
