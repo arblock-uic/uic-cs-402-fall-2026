@@ -22,7 +22,7 @@ Other notes
 - Please ask questions about the project on Ed Discussion.
 
 ### Due Date
-**Sunday, September 20, 2026 by 11:59pm**
+**Sunday, September 27, 2026 by 11:59pm**
 
 
 ### Writing Your Code
