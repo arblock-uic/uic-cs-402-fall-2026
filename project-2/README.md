@@ -61,7 +61,7 @@ Note that the given test cases do not include all possible tests I will use to g
 Part of your grade will also come from manual inspection of your code. This is because the auto grader cannot check if you are implementing the correct algorithms, it can only check that you pass some tests. To help make this process smooth and easy, please be sure to write legible and clear code.
 
 #### Project Assessment
-There will be a short **in-class, written** assessment after the project is due. For this project, the assessment is scheduled for **Thursday, September 24th, 2026**.
+There will be a short **in-class, written** assessment after the project is due. For this project, the assessment is scheduled for **Thursday, October 1st, 2026**.
 
 #### Extra Credit
 Included in this project are several opportunities to earn extra credit.
