@@ -16,7 +16,9 @@ The project includes
     You can add things to the header/`.cpp` file as you need.
 
 - `sha256.h` and `sha256.cpp`
-    - These include implementations of the SHA256 function, which can be used to 
+    - These include implementations of the SHA256 function, which can be used to test your implementations.
+    As given, they map strings to strings, which is useful for some of the functions you are asked to implement.
+    For other integer valued functions, you may have to truncate the strings and convert to integers.
 
 Other notes
 - Please ask questions about the project on Ed Discussion.
