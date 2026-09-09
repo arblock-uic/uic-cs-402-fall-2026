@@ -27,7 +27,7 @@ using namespace std;
  * - DO NOT MODIFY THE FUNCTION SIGNATURES!!!
  *
  * - You are allowed to add helper functions. Be sure to add the appropriate
- *   function prototypes in "Fistname_Lastname_project1.h".
+ *   function prototypes in "Firstname_Lastname_project1.h".
  *
  * - The file "testing.cpp" has various functions you can utilize to test
  *   your code. You can also add your own tests!
@@ -61,7 +61,7 @@ const std::string who_am_i() {
  *  vector<T> &list: reference to a list of type T. You can assume this type
  *                   has all of the normal binary comparison operators such
  *                   as <, >, ==, !=, etc.
- *  bool decending:  if true, then sort in descending order; otherwise sort
+ *  bool descending:  if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default)
  * */
 template<typename T>
@@ -86,7 +86,7 @@ void bubble_sort(vector<T> &list, bool descending) {
  *
  * 5 points
  * 
- * Algorithm: Continuously finds the minimium (or maximum) element in the list, 
+ * Algorithm: Continuously finds the minimum (or maximum) element in the list, 
  *            then swaps it with the first non-sorted element of the list.
  *            This is an unstable, in-place sorting algorithm. 
  *            Your implementation must be in-place.
@@ -95,7 +95,7 @@ void bubble_sort(vector<T> &list, bool descending) {
  *  vector<T> &list: reference to a list of type T. You can assume this type
  *                   has all of the normal binary comparison operators such
  *                   as <, >, ==, !=, etc.
- *  bool decending:  if true, then sort in descending order; otherwise sort
+ *  bool descending:  if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default)
  * */
 template<typename T>
@@ -130,7 +130,7 @@ void selection_sort(vector<T> &list, bool descending) {
  *  vector<T> &list: reference to a list of type T. You can assume this type
  *                   has all of the normal binary comparison operators such
  *                   as <, >, ==, !=, etc.
- *  bool decending:  if true, then sort in descending order; otherwise sort
+ *  bool descending:  if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default)
  * */
 //template<typename T>
@@ -161,7 +161,7 @@ void insertion_sort(vector<T> &list, bool descending) {
  *  vector<T> &list: reference to a list of type T. You can assume this type
  *                   has all of the normal binary comparison operators such
  *                   as <, >, ==, !=, etc.
- *  bool decending:  if true, then sort in descending order; otherwise sort
+ *  bool descending:  if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default)
  *
  * */
@@ -190,12 +190,12 @@ void quicksort(vector<T> &list, bool descending) {
  *  vector<T> &list: reference to a list of type T. You can assume this type
  *                   has all of the normal binary comparison operators such
  *                   as <, >, ==, !=, etc.
- *  bool decending:  if true, then sort in descending order; otherwise sort
+ *  bool descending:  if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default)
  *
  * */
 template<typename T>
-void merge_sort(vector<T> &list, bool decending) {
+void merge_sort(vector<T> &list, bool descending) {
     // Your code here!
 }
 
@@ -225,7 +225,7 @@ void merge_sort(vector<T> &list, bool decending) {
  *  vector<T> &list: reference to a list of type T. You can assume this type
  *                   has all of the normal binary comparison operators such
  *                   as <, >, ==, !=, etc.
- *  bool decending:  if true, then sort in descending order; otherwise sort
+ *  bool descending:  if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default)
  *
  */
@@ -281,7 +281,7 @@ void binary_radix_sort(vector<T> &list, bool descending) {
  *                      Note that base should be at least 2. The default
  *                      base is 10.
  *
- *   bool decending: if true, then sort in descending order; otherwise sort
+ *   bool descending: if true, then sort in descending order; otherwise sort
  *                   in ascending order (the default).
  *
  */
