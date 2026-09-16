@@ -1,10 +1,13 @@
 #include <vector>
 #include <algorithm>
+#include <iostream>
 
 
 //#include "/grading_dir/tests/extra/testing.h"
 #include "/grading_dir/tests/extra/testing.cpp"
 
+const std::string who_am_i();
+const std::string filename = "/grading_dir/results/feedback/" + who_am_i() + " [insertion_sort].txt";
 
 
 template<typename T>
@@ -17,6 +20,7 @@ int main() {
     double score = 0.0;
     
 
+    std::ofstream out_file(filename);
 
     // different type tests; 1 point each (6 total)
     std::vector<StableChar> char_test = gen_stable_char_one_percent(9);
@@ -31,21 +35,27 @@ int main() {
 
     insertion_sort(char_test);
     if(std::is_sorted(char_test.begin(), char_test.end())) ++score;
+    else out_file << "char_test failed" << std::endl;
 
     insertion_sort(string_test);
     if(std::is_sorted(string_test.begin(), string_test.end())) ++score;
+    else out_file << "string_test failed" << std::endl;
 
     insertion_sort(short_test);
     if(std::is_sorted(short_test.begin(), short_test.end())) ++score;
+    else out_file << "short int test failed" << std::endl;
 
     insertion_sort(unsigned_short_test);
     if(std::is_sorted(unsigned_short_test.begin(), unsigned_short_test.end())) ++score;
+    else out_file << "unsigned short int test failed" << std::endl;
 
     insertion_sort(long_test);
     if(std::is_sorted(long_test.begin(), long_test.end())) ++score;
+    else out_file << "long int test failed" << std::endl;
 
     insertion_sort(unsigned_long_test);
     if(std::is_sorted(unsigned_long_test.begin(), unsigned_long_test.end())) ++score;
+    else out_file << "unsigned long int test failed" << std::endl;
 
 
 
@@ -58,7 +68,10 @@ int main() {
     insertion_sort(stable_int_test2, true);
 
     if(is_stable_sorted(stable_int_test1)) ++stable_score;
+    else out_file << "unsigned long int test failed" << std::endl;
+
     if(is_stable_sorted(stable_int_test2,true)) ++stable_score;
+    else out_file << "StableInt descending test failed" << std::endl;
 
     std::vector<StableChar> stable_char_test1 = gen_stable_char_many_dupes(1027);
     std::vector<StableChar> stable_char_test2 = gen_stable_char_many_dupes(1029);
@@ -67,7 +80,10 @@ int main() {
     insertion_sort(stable_char_test2, true);
 
     if(is_stable_sorted(stable_char_test1)) ++stable_score;
+    else out_file << "StableChar test failed" << std::endl;
+
     if(is_stable_sorted(stable_char_test2,true)) ++stable_score;
+    else out_file << "StableChar descending test failed" << std::endl;
 
     std::vector<StableString> stable_string_test1 = gen_stable_string_many_dupes(1027);
     std::vector<StableString> stable_string_test2 = gen_stable_string_many_dupes(1029);
@@ -76,7 +92,11 @@ int main() {
     insertion_sort(stable_string_test2, true);
 
     if(is_stable_sorted(stable_string_test1)) ++stable_score;
+    else out_file << "StableString test failed" << std::endl;
+
     if(is_stable_sorted(stable_string_test2,true)) ++stable_score;
+    else out_file << "StableString descending test failed" << std::endl;
+
 
     score += (stable_score / 2);
 
@@ -99,9 +119,17 @@ int main() {
         insertion_sort(descending_test2,true);
 
         if(std::is_sorted(ascending_test1.begin(), ascending_test1.end())) ++asc_des_score;
+        else out_file << "Ascending test 1 failed" << std::endl;
+
         if(std::is_sorted(descending_test1.begin(), descending_test1.end(), std::greater<>{})) ++asc_des_score;
+        else out_file << "Descending test 1 failed" << std::endl;
+
         if(std::is_sorted(ascending_test2.begin(), ascending_test2.end())) ++asc_des_score;
+        else out_file << "Ascending test 2 failed" << std::endl;
+
         if(std::is_sorted(descending_test2.begin(), descending_test2.end(), std::greater<>{})) ++asc_des_score;
+        else out_file << "Descending test 2 failed" << std::endl;
+
 
     }
 
@@ -113,6 +141,9 @@ int main() {
 
     insertion_sort(empty_test);
     if(std::is_sorted(empty_test.begin(), empty_test.end())) ++score;
+    else out_file << "Empty test failed" << std::endl;
+
+    out_file.close();
 
     RESULT(100*(score / total_points));
 

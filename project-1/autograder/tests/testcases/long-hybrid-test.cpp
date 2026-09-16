@@ -1,11 +1,13 @@
 
 #include <vector>
 #include <algorithm>
-
+#include <iostream>
 
 //#include "/grading_dir/tests/extra/testing.h"
 #include "/grading_dir/tests/extra/testing.cpp"
 
+const std::string who_am_i();
+const std::string filename = "/grading_dir/results/feedback/" + who_am_i() + " [long_hybrid_sort].txt";
 
 
 template<typename T>
@@ -18,6 +20,7 @@ int main() {
     double score = 0.0;
     
 
+    std::ofstream out_file(filename);
 
     // (unsigned) int different number tests; one point per pair (10 total)
     double asc_des_score = 0.0;
@@ -37,15 +40,22 @@ int main() {
         my_hybrid_sort(descending_test2,true);
 
         if(std::is_sorted(ascending_test1.begin(), ascending_test1.end())) ++asc_des_score;
+        else out_file << "Ascending test 1 failed" << std::endl;
+
         if(std::is_sorted(descending_test1.begin(), descending_test1.end(), std::greater<>{})) ++asc_des_score;
+        else out_file << "Descending test 1 failed" << std::endl;
+
         if(std::is_sorted(ascending_test2.begin(), ascending_test2.end())) ++asc_des_score;
+        else out_file << "Ascending test 2 failed" << std::endl;
+
         if(std::is_sorted(descending_test2.begin(), descending_test2.end(), std::greater<>{})) ++asc_des_score;
+        else out_file << "Descending test 2 failed" << std::endl;
 
     }
 
     score += (asc_des_score / 2);
     
-    
+    out_file.close();
 
     RESULT(100*(score / total_points));
 
