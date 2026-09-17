@@ -3,6 +3,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 
 //#include "/grading_dir/tests/extra/testing.h"
 #include "/grading_dir/tests/extra/testing.cpp"
@@ -56,8 +57,8 @@ int main() {
     unsigned int base_list[10] = {3, 3, 6, 6, 8, 8, 10, 10, 16, 16};
     for(int i = 0; i < 5; ++i) {
 
-        std::vector<int> ascending_test1 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
-        std::vector<int> descending_test1(ascending_test1);
+        std::vector<unsigned int> ascending_test1 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
+        std::vector<unsigned int> descending_test1(ascending_test1);
 
         std::vector<unsigned int> ascending_test2 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
         std::vector<unsigned int> descending_test2(ascending_test2);
@@ -91,7 +92,7 @@ int main() {
     if(std::is_sorted(empty_test.begin(), empty_test.end())) ++score;
     else out_file << "Empty test failed" << std::endl;
 
-    out_file.close()
+    out_file.close();
 
     RESULT(100*(score / total_points));
 

@@ -7,7 +7,7 @@ POSSIBLE_SOURCE_FILE_STEMS = [ "project1" ]
 SUBMISSION_PRECOMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
 TESTCASE_PRECOMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
 TESTCASE_COMPILATION_ARGS = {'DEFAULT' = "-std=c++20"}
-TESTCASE_WEIGHT = { 'long-general-radix-test.cpp' = 0.07,  'general-radix-test.cpp' = 0.18, 'long-hybrid-test.cpp' = 0.06, 'hybrid-test.cpp' = 0.14,  'long-quicksort-test.cpp' = 0.03, 'quicksort-test.cpp' = 0.07, 'long-merge-test.cpp' = 0.03, 'merge-test.cpp' = 0.07, "bubble-test.cpp" = 0.05, "insertion-test.cpp" = 0.05, "selection-test.cpp" = 0.05 }
+TESTCASE_WEIGHT = { 'long-general-radix-test.cpp' = 0.06,  'general-radix-test.cpp' = 0.14, 'long-hybrid-test.cpp' = 0.05, 'hybrid-test.cpp' = 0.1,  'long-quicksort-test.cpp' = 0.03, 'quicksort-test.cpp' = 0.07, 'long-merge-test.cpp' = 0.03, 'merge-test.cpp' = 0.07, "bubble-test.cpp" = 0.05, "insertion-test.cpp" = 0.05, "selection-test.cpp" = 0.05 }
 
 [GCC]
 MEMORY_LEAK_DETECTION = true

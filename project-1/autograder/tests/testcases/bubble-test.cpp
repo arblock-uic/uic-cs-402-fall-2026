@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <fstream>
 
 //#include "/grading_dir/tests/extra/testing.h"
 #include "/grading_dir/tests/extra/testing.cpp"
@@ -141,7 +142,7 @@ int main() {
     if(std::is_sorted(empty_test.begin(), empty_test.end())) ++score;
     else out_file << "Empty test failed" << std::endl;
 
-    out_file.close()
+    out_file.close();
 
     RESULT(100*(score / total_points));
 

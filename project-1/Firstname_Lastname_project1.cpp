@@ -264,7 +264,7 @@ void binary_radix_sort(vector<T> &list, bool descending) {
 
 /* Base B Radix Sort 
  *
- * 25 Points
+ * 20 Points
  *
  * Algorithm: Implement Radix Sort as discussed in class, but with
  *            respect to any unspecified base.

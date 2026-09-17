@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
 
 //#include "/grading_dir/tests/extra/testing.h"
@@ -32,8 +33,8 @@ int main() {
     unsigned int base_list[10] = {3, 3, 6, 6, 8, 8, 10, 10, 16, 16};
     for(int i = 5; i < 10; ++i) {
 
-        std::vector<int> ascending_test1 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
-        std::vector<int> descending_test1(ascending_test1);
+        std::vector<unsigned int> ascending_test1 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
+        std::vector<unsigned int> descending_test1(ascending_test1);
 
         std::vector<unsigned int> ascending_test2 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
         std::vector<unsigned int> descending_test2(ascending_test2);
