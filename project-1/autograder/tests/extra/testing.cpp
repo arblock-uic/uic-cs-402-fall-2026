@@ -1,5 +1,11 @@
 #include "testing.h"
 
+unsigned int sample_int() {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<unsigned int> dist(0);
+    return dist(mt);
+}
 
 /* Helper function to print vector */
 
@@ -24,9 +30,8 @@ std::vector<unsigned long> gen_unique_unsigned_long_list(unsigned int len);
 
 std::vector<short> gen_unique_short_list(unsigned int len) {
     std::vector<short> int_list {};
-    std::srand(std::time({}));
     for(short i = 0; i < len; i++) {
-        unsigned int is_neg = static_cast<unsigned int>(rand());
+        unsigned int is_neg = static_cast<unsigned int>(sample_int());
         if(is_neg % 2) {
             int_list.push_back(-(i+1));
         }
@@ -57,9 +62,8 @@ std::vector<unsigned short> gen_unique_unsigned_short_list(unsigned int len) {
 
 std::vector<int> gen_unique_int_list(unsigned int len) {
     std::vector<int> int_list {};
-    std::srand(std::time({}));
     for(int i = 0; i < len; i++) {
-        unsigned int is_neg = static_cast<unsigned int>(rand());
+        unsigned int is_neg = static_cast<unsigned int>(sample_int());
         if(is_neg % 2) {
             int_list.push_back(-(i+1));
         }
@@ -90,9 +94,8 @@ std::vector<unsigned int> gen_unique_unsigned_int_list(unsigned int len) {
 
 std::vector<long> gen_unique_long_list(unsigned int len) {
     std::vector<long> int_list {};
-    std::srand(std::time({}));
     for(long i = 0; i < len; i++) {
-        unsigned int is_neg = static_cast<unsigned int>(rand());
+        unsigned int is_neg = static_cast<unsigned int>(sample_int());
         if(is_neg % 2) {
             int_list.push_back(-(i+1));
         }
@@ -126,9 +129,8 @@ std::vector<int> gen_random_list(unsigned int len) {
 
     std::vector<int> int_list {};
 
-    std::srand(std::time({}));
     for(int i = 0; i < len; i++) {
-        int_list.push_back(static_cast<int>(rand()) * ( -1 + (static_cast<int>(rand()) % 2)*2   )  );
+        int_list.push_back(static_cast<int>(sample_int()) * ( -1 + (static_cast<int>(sample_int()) % 2)*2   )  );
     }
 
     return int_list;
@@ -137,8 +139,7 @@ std::vector<int> gen_random_list(unsigned int len) {
 /* Generate descending list of integers of size len */
 std::vector<int> gen_descending_list(unsigned int len) { 
     std::vector<int> int_list {};
-    std::srand(std::time({}));
-    int start_int = static_cast<int>( (rand() % len)*((-1) + 2*(rand() % 2))  );
+    int start_int = static_cast<int>( (sample_int() % len)*((-1) + 2*(sample_int() % 2))  );
     for(int i = 0; i < len; i++) {
         int_list.push_back(start_int);
         --start_int;
@@ -150,8 +151,7 @@ std::vector<int> gen_descending_list(unsigned int len) {
 /* Generates a list of ascending integers of size len */
 std::vector<int> gen_ascending_list(unsigned int len) { 
     std::vector<int> int_list {};
-    std::srand(std::time({}));
-    int start_int = static_cast<int>( (rand() % len)*((-1) + 2*(rand() % 2))  );
+    int start_int = static_cast<int>( (sample_int() % len)*((-1) + 2*(sample_int() % 2))  );
     for(int i = 0; i < len; i++) {
         int_list.push_back(start_int);
         ++start_int;
@@ -164,10 +164,9 @@ std::vector<int> gen_ascending_list(unsigned int len) {
 /* Generates an ascending list with 3 random swaps */
 std::vector<int> gen_asending_3swap_list(unsigned int len) {
     std::vector<int> int_list = gen_ascending_list(len);
-    std::srand(std::time({}));
     for(int i = 0; i < 3; i++) {
-        unsigned int swap_index1 = static_cast<unsigned int>( rand() % len );
-        unsigned int swap_index2 = static_cast<unsigned int>( rand() % len );
+        unsigned int swap_index1 = static_cast<unsigned int>( sample_int() % len );
+        unsigned int swap_index2 = static_cast<unsigned int>( sample_int() % len );
 
         int temp = int_list[swap_index1];
         int_list[swap_index1] = int_list[swap_index2];
@@ -179,8 +178,7 @@ std::vector<int> gen_asending_3swap_list(unsigned int len) {
 /* Genarates a list of all equal entries of length len */
 std::vector<int> gen_all_equal_list(unsigned int len) {
     std::vector<int> int_list = {};
-    srand(time({}));
-    int choice = static_cast<int>( rand() );
+    int choice = static_cast<int>( sample_int() );
     for(int i = 0; i < len; i++) {
         int_list.push_back(choice);
     }
@@ -191,10 +189,9 @@ std::vector<int> gen_all_equal_list(unsigned int len) {
 /* Generates list containing many duplicates of length len */
 std::vector<int> gen_many_dupes_list(unsigned int len) {
     std::vector<int> int_list = {};
-    srand(time({}));
     while(int_list.size() < len) {
-        unsigned int num_dupes = static_cast<unsigned int>( rand() % 17 );
-        int item = static_cast<int>( rand() % 513 );
+        unsigned int num_dupes = static_cast<unsigned int>( sample_int() % 17 );
+        int item = static_cast<int>( sample_int() % 513 );
         for(int j = 0; j < num_dupes && int_list.size() < len; j++) {
             int_list.push_back(item);
         }
@@ -209,10 +206,9 @@ std::vector<int> gen_one_percent_rand_list(unsigned int len) {
 
     unsigned int percent = ceil(len*.01);
 
-    srand(time({}));
     for(int i = 0; i < percent; i++) {
-        unsigned int index = static_cast<unsigned int>( rand() % len );
-        unsigned int value = static_cast<int>( rand() );
+        unsigned int index = static_cast<unsigned int>( sample_int() % len );
+        unsigned int value = static_cast<int>( sample_int() );
 
         int_list[index] = value;
     }
@@ -278,10 +274,9 @@ std::vector<StableInt> gen_stable_int_random(unsigned int len) {
 
 std::vector<StableChar> gen_stable_char_many_dupes(unsigned int len) {
     std::vector<char> char_list = {};
-    srand(time({}));
     while(char_list.size() < len) {
-        unsigned int num_dupes = static_cast<unsigned int>( rand() % 17 );
-        char item = static_cast<char>( rand() );
+        unsigned int num_dupes = static_cast<unsigned int>( sample_int() % 17 );
+        char item = static_cast<char>( sample_int() );
         for(int j = 0; j < num_dupes && char_list.size() < len; j++) {
             char_list.push_back(item);
         }
@@ -297,9 +292,8 @@ std::vector<StableChar> gen_stable_char_many_dupes(unsigned int len) {
 
 std::vector<StableChar> gen_stable_char_one_percent(unsigned int len) {
     std::vector<char> char_list {};
-    std::srand(std::time({}));
 
-    char start_char = static_cast<char>( (rand() % 256)  );
+    char start_char = static_cast<char>( (sample_int() % 256)  );
     for(int i = 0; i < len; i++) {
         char_list.push_back(start_char);
         ++start_char;
@@ -307,10 +301,9 @@ std::vector<StableChar> gen_stable_char_one_percent(unsigned int len) {
 
     unsigned int percent = (len % 10 == 0) ? len/10 : 1+(len/10);
 
-    srand(time({}));
     for(int i = 0; i < percent; i++) {
-        unsigned int index = static_cast<unsigned int>( rand() % len );
-        char value = static_cast<char>( (rand() % 256) );
+        unsigned int index = static_cast<unsigned int>( sample_int() % len );
+        char value = static_cast<char>( (sample_int() % 256) );
 
         char_list[index] = value;
     }
@@ -329,14 +322,13 @@ std::vector<StableChar> gen_stable_char_one_percent(unsigned int len) {
 std::vector<StableString> gen_stable_string_many_dupes(unsigned int len) {
     std::vector<std::string> string_list {};
 
-    srand(time({}));
 
     while(string_list.size() < len) {
-        unsigned int num_dupes = static_cast<unsigned int>( rand() % 17 );
-        unsigned int str_len = static_cast<unsigned int>( rand() % 29 );
+        unsigned int num_dupes = static_cast<unsigned int>( sample_int() % 17 );
+        unsigned int str_len = static_cast<unsigned int>( sample_int() % 29 );
         std::string item  = "";
         while(item.length() < str_len) {
-            item += static_cast<char>( rand() );
+            item += static_cast<char>( sample_int() );
         }
         for(int j = 0; j < num_dupes && string_list.size() < len; j++) {
             string_list.push_back(item);
@@ -352,9 +344,8 @@ std::vector<StableString> gen_stable_string_many_dupes(unsigned int len) {
 }
 std::vector<StableString> gen_stable_string_one_percent(unsigned int len) {
     std::vector<std::string> string_list {};
-    std::srand(std::time({}));
 
-    char start_char = static_cast<char>( (rand() % 256)  );
+    char start_char = static_cast<char>( (sample_int() % 256)  );
     std::string item = "";
     item += start_char;
     for(int i = 0; i < len; i++) {
@@ -364,10 +355,9 @@ std::vector<StableString> gen_stable_string_one_percent(unsigned int len) {
 
     unsigned int percent = (len % 10 == 0) ? len/10 : 1+(len/10);
 
-    srand(time({}));
     for(int i = 0; i < percent; i++) {
-        unsigned int index = static_cast<unsigned int>( rand() % len );
-        char value = static_cast<char>( (rand() % 256) );
+        unsigned int index = static_cast<unsigned int>( sample_int() % len );
+        char value = static_cast<char>( (sample_int() % 256) );
 
         string_list[index] = value;
     }

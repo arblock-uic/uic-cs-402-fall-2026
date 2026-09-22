@@ -29,36 +29,42 @@ int main() {
     std::vector<StableChar> char_test = gen_stable_char_one_percent(9);
     std::vector<StableString> string_test = gen_stable_string_one_percent(9);
 
+    my_hybrid_sort(char_test);
+    if(std::is_sorted(char_test.begin(), char_test.end())) ++score;
+    else out_file << "char_test failed" << std::endl;
+    char_test.clear();
+
+    my_hybrid_sort(string_test);
+    if(std::is_sorted(string_test.begin(), string_test.end())) ++score;
+    else out_file << "string_test failed" << std::endl;
+    string_test.clear();
+
     std::vector<short> short_test = gen_unique_short_list(259);
     std::vector<unsigned short> unsigned_short_test = gen_unique_unsigned_short_list(250);
+
+    my_hybrid_sort(short_test);
+    if(std::is_sorted(short_test.begin(), short_test.end())) ++score;
+    else out_file << "short int test failed" << std::endl;
+    short_test.clear();
+
+    my_hybrid_sort(unsigned_short_test);
+    if(std::is_sorted(unsigned_short_test.begin(), unsigned_short_test.end())) ++score;
+    else out_file << "unsigned short int test failed" << std::endl;
+    unsigned_short_test.clear();
 
     std::vector<long> long_test = gen_unique_long_list(601);
     std::vector<unsigned long> unsigned_long_test = gen_unique_unsigned_long_list(598);
 
 
-    my_hybrid_sort(char_test);
-    if(std::is_sorted(char_test.begin(), char_test.end())) ++score;
-    else out_file << "char_test failed" << std::endl;
-
-    my_hybrid_sort(string_test);
-    if(std::is_sorted(string_test.begin(), string_test.end())) ++score;
-    else out_file << "string_test failed" << std::endl;
-
-    my_hybrid_sort(short_test);
-    if(std::is_sorted(short_test.begin(), short_test.end())) ++score;
-    else out_file << "short int test failed" << std::endl;
-
-    my_hybrid_sort(unsigned_short_test);
-    if(std::is_sorted(unsigned_short_test.begin(), unsigned_short_test.end())) ++score;
-    else out_file << "unsigned short int test failed" << std::endl;
-
     my_hybrid_sort(long_test);
     if(std::is_sorted(long_test.begin(), long_test.end())) ++score;
     else out_file << "long int test failed" << std::endl;
+    long_test.clear();
 
     my_hybrid_sort(unsigned_long_test);
     if(std::is_sorted(unsigned_long_test.begin(), unsigned_long_test.end())) ++score;
     else out_file << "unsigned long int test failed" << std::endl;
+    unsigned_long_test.clear();
 
 
 
@@ -103,25 +109,31 @@ int main() {
         std::vector<int> ascending_test1 = gen_unique_int_list(size_list[i]+perturb_list[i]);
         std::vector<int> descending_test1(ascending_test1);
 
-        std::vector<unsigned int> ascending_test2 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
-        std::vector<unsigned int> descending_test2(ascending_test2);
-
         my_hybrid_sort(ascending_test1);
-        my_hybrid_sort(ascending_test2);
         my_hybrid_sort(descending_test1,true);
-        my_hybrid_sort(descending_test2,true);
 
         if(std::is_sorted(ascending_test1.begin(), ascending_test1.end())) ++asc_des_score;
         else out_file << "Ascending test 1 failed" << std::endl;
+        ascending_test1.clear();
 
         if(std::is_sorted(descending_test1.begin(), descending_test1.end(), std::greater<>{})) ++asc_des_score;
         else out_file << "Descending test 1 failed" << std::endl;
+        descending_test1.clear();
+
+
+        std::vector<unsigned int> ascending_test2 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
+        std::vector<unsigned int> descending_test2(ascending_test2);
+
+        my_hybrid_sort(ascending_test2);
+        my_hybrid_sort(descending_test2,true);
 
         if(std::is_sorted(ascending_test2.begin(), ascending_test2.end())) ++asc_des_score;
         else out_file << "Ascending test 2 failed" << std::endl;
+        ascending_test2.clear();
 
         if(std::is_sorted(descending_test2.begin(), descending_test2.end(), std::greater<>{})) ++asc_des_score;
         else out_file << "Descending test 2 failed" << std::endl;
+        descending_test2.clear();
 
     }
 

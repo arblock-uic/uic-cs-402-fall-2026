@@ -36,25 +36,30 @@ int main() {
         std::vector<unsigned int> ascending_test1 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
         std::vector<unsigned int> descending_test1(ascending_test1);
 
-        std::vector<unsigned int> ascending_test2 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
-        std::vector<unsigned int> descending_test2(ascending_test2);
-
         radix_sort(ascending_test1, base_list[i]);
-        radix_sort(ascending_test2, base_list[i]);
         radix_sort(descending_test1, base_list[i], true);
-        radix_sort(descending_test2, base_list[i], true);
 
         if(std::is_sorted(ascending_test1.begin(), ascending_test1.end())) ++asc_des_score;
         else out_file << "Ascending test 1 failed" << std::endl;
+        ascending_test1.clear();
 
         if(std::is_sorted(descending_test1.begin(), descending_test1.end(), std::greater<>{})) ++asc_des_score;
         else out_file << "Descending test 1 failed" << std::endl;
+        descending_test1.clear();
+
+        std::vector<unsigned int> ascending_test2 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
+        std::vector<unsigned int> descending_test2(ascending_test2);
+
+        radix_sort(ascending_test2, base_list[i]);
+        radix_sort(descending_test2, base_list[i], true);
 
         if(std::is_sorted(ascending_test2.begin(), ascending_test2.end())) ++asc_des_score;
         else out_file << "Ascending test 2 failed" << std::endl;
+        ascending_test2.clear();
 
         if(std::is_sorted(descending_test2.begin(), descending_test2.end(), std::greater<>{})) ++asc_des_score;
         else out_file << "Descending test 2 failed" << std::endl;
+        descending_test2.clear();
 
     }
 

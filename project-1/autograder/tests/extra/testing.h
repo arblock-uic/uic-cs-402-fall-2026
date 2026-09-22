@@ -10,6 +10,7 @@
 #ifndef TESTING
 #define TESTING
 
+unsigned int sample_int();
 
 
 /* Structs for testing stable sorting*/ 

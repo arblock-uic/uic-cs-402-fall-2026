@@ -16,48 +16,52 @@ void insertion_sort(std::vector<T>& list, bool descending = false);
 
 
 int main() {
-
+    
+    
     double total_points = 20.0;
     double score = 0.0;
     
-
     std::ofstream out_file(filename);
+
 
     // different type tests; 1 point each (6 total)
     std::vector<StableChar> char_test = gen_stable_char_one_percent(9);
     std::vector<StableString> string_test = gen_stable_string_one_percent(9);
-
-    std::vector<short> short_test = gen_unique_short_list(259);
-    std::vector<unsigned short> unsigned_short_test = gen_unique_unsigned_short_list(250);
-
-    std::vector<long> long_test = gen_unique_long_list(601);
-    std::vector<unsigned long> unsigned_long_test = gen_unique_unsigned_long_list(598);
-
-
     insertion_sort(char_test);
     if(std::is_sorted(char_test.begin(), char_test.end())) ++score;
     else out_file << "char_test failed" << std::endl;
+    char_test.clear();
 
     insertion_sort(string_test);
     if(std::is_sorted(string_test.begin(), string_test.end())) ++score;
     else out_file << "string_test failed" << std::endl;
+    string_test.clear();
+
+    std::vector<short> short_test = gen_unique_short_list(259);
+    std::vector<unsigned short> unsigned_short_test = gen_unique_unsigned_short_list(250);
 
     insertion_sort(short_test);
     if(std::is_sorted(short_test.begin(), short_test.end())) ++score;
     else out_file << "short int test failed" << std::endl;
+    short_test.clear();
 
     insertion_sort(unsigned_short_test);
     if(std::is_sorted(unsigned_short_test.begin(), unsigned_short_test.end())) ++score;
     else out_file << "unsigned short int test failed" << std::endl;
+    unsigned_short_test.clear();
+
+    std::vector<long> long_test = gen_unique_long_list(601);
+    std::vector<unsigned long> unsigned_long_test = gen_unique_unsigned_long_list(598);
 
     insertion_sort(long_test);
     if(std::is_sorted(long_test.begin(), long_test.end())) ++score;
     else out_file << "long int test failed" << std::endl;
+    long_test.clear();
 
     insertion_sort(unsigned_long_test);
     if(std::is_sorted(unsigned_long_test.begin(), unsigned_long_test.end())) ++score;
     else out_file << "unsigned long int test failed" << std::endl;
-
+    unsigned_long_test.clear();
 
 
     // Stable Tests; 1 point per pair (or half a point each) (3 total)
@@ -69,10 +73,12 @@ int main() {
     insertion_sort(stable_int_test2, true);
 
     if(is_stable_sorted(stable_int_test1)) ++stable_score;
-    else out_file << "unsigned long int test failed" << std::endl;
+    else out_file << "StableInt test failed" << std::endl;
+    stable_int_test1.clear();
 
     if(is_stable_sorted(stable_int_test2,true)) ++stable_score;
     else out_file << "StableInt descending test failed" << std::endl;
+    stable_int_test2.clear();
 
     std::vector<StableChar> stable_char_test1 = gen_stable_char_many_dupes(1027);
     std::vector<StableChar> stable_char_test2 = gen_stable_char_many_dupes(1029);
@@ -82,9 +88,11 @@ int main() {
 
     if(is_stable_sorted(stable_char_test1)) ++stable_score;
     else out_file << "StableChar test failed" << std::endl;
+    stable_char_test1.clear();
 
     if(is_stable_sorted(stable_char_test2,true)) ++stable_score;
     else out_file << "StableChar descending test failed" << std::endl;
+    stable_char_test2.clear();
 
     std::vector<StableString> stable_string_test1 = gen_stable_string_many_dupes(1027);
     std::vector<StableString> stable_string_test2 = gen_stable_string_many_dupes(1029);
@@ -94,10 +102,11 @@ int main() {
 
     if(is_stable_sorted(stable_string_test1)) ++stable_score;
     else out_file << "StableString test failed" << std::endl;
+    stable_string_test1.clear();
 
     if(is_stable_sorted(stable_string_test2,true)) ++stable_score;
     else out_file << "StableString descending test failed" << std::endl;
-
+    stable_string_test2.clear();
 
     score += (stable_score / 2);
 
@@ -111,26 +120,30 @@ int main() {
         std::vector<int> ascending_test1 = gen_unique_int_list(size_list[i]+perturb_list[i]);
         std::vector<int> descending_test1(ascending_test1);
 
-        std::vector<unsigned int> ascending_test2 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
-        std::vector<unsigned int> descending_test2(ascending_test2);
-
         insertion_sort(ascending_test1);
-        insertion_sort(ascending_test2);
         insertion_sort(descending_test1,true);
-        insertion_sort(descending_test2,true);
-
         if(std::is_sorted(ascending_test1.begin(), ascending_test1.end())) ++asc_des_score;
         else out_file << "Ascending test 1 failed" << std::endl;
+        ascending_test1.clear();
 
         if(std::is_sorted(descending_test1.begin(), descending_test1.end(), std::greater<>{})) ++asc_des_score;
         else out_file << "Descending test 1 failed" << std::endl;
+        descending_test1.clear();
+
+        std::vector<unsigned int> ascending_test2 = gen_unique_unsigned_int_list(size_list[i]+perturb_list[i]);
+        std::vector<unsigned int> descending_test2(ascending_test2);
+
+        insertion_sort(ascending_test2);
+        insertion_sort(descending_test2,true);
+
 
         if(std::is_sorted(ascending_test2.begin(), ascending_test2.end())) ++asc_des_score;
         else out_file << "Ascending test 2 failed" << std::endl;
+        ascending_test2.clear();
 
         if(std::is_sorted(descending_test2.begin(), descending_test2.end(), std::greater<>{})) ++asc_des_score;
         else out_file << "Descending test 2 failed" << std::endl;
-
+        descending_test2.clear();
 
     }
 
