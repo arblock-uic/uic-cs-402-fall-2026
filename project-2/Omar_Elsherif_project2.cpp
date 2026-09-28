@@ -106,7 +106,6 @@ vector<unsigned int> birthday_attack_1(function<unsigned short(unsigned int)> ha
     // Note you can implement your own test hash functions so long as their 
     // signatures match the `test_hash` function signature.
     
-    // Your code here!
     for (int attempt = 0; attempt < 5; ++attempt) {
         unordered_map<unsigned short, unsigned int> seen;
         for (int k = 0; k < 350; ++k) {
@@ -176,7 +175,6 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
     // Note you can implement your own test hash functions so long as their 
     // signatures match the `test_hash` function signature.
     
-    // Your code here!
     unsigned int tort = hash_function(0);
     unsigned int hare = hash_function(hash_function(0));
 
@@ -193,6 +191,11 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
         tort = hash_function(tort);
         hare = hash_function(hare);
     }
+
+    if (tort == hare) {
+        hare = hash_function(tort);
+    }
+
     return {tort, hare};
 }
 
@@ -241,7 +244,6 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
 
 string merkle_commit(const vector<string>& list, function<string(string)> hash_function) {
     if (list.empty()) return "";
-
     // Hash each leaf with its string index appended
     vector<string> current_level;
     current_level.reserve(list.size());
@@ -358,6 +360,42 @@ vector<pair<string,string>> merkle_open_position(
     function<string(string)> hash_function, 
     const unsigned int i
 ) {
+    if (list.empty() || i >= list.size()) return {};
+
+    vector<pair<string, string>> proof;
+
+    // Add the leaf element itself along with its side
+    string side = (i % 2 == 0) ? "L" : "R";
+    proof.push_back({side, list[i]});
+
+    // Build level 0 leaf hashes
+    vector<string> current_level;
+    current_level.reserve(list.size());
+    for (size_t idx = 0; idx < list.size(); ++idx) {
+        current_level.push_back(hash_function(list[idx] + to_string(idx)));
+    }
+
+    // Traverse up the tree level by level
+    size_t curr_idx = i;
+    while (current_level.size() > 1) {
+        // Find sibling index and side
+        size_t sibling_idx = (curr_idx % 2 == 0) ? (curr_idx + 1) : (curr_idx - 1);
+        string sibling_side = (sibling_idx % 2 == 0) ? "L" : "R";
+
+        proof.push_back({sibling_side, current_level[sibling_idx]});
+
+        // Advance to parent level
+        curr_idx /= 2;
+
+        vector<string> next_level;
+        next_level.reserve(current_level.size() / 2);
+        for (size_t k = 0; k < current_level.size(); k += 2) {
+            next_level.push_back(hash_function(current_level[k] + current_level[k + 1]));
+        }
+        current_level = std::move(next_level);
+    }
+    return proof;
+
     
 }
 
@@ -408,6 +446,22 @@ int merkle_verify_position(
     function<string(string)> hash_function, 
     const unsigned int i
 ) {
+    if (proof.empty()) return 1;
+
+    // Recompute leaf hash with position appended
+    string h = hash_function(proof[0].second + to_string(i));
+
+    // Reconstruct root using sibling hashes
+    for (size_t idx = 1; idx < proof.size(); ++idx) {
+        const auto& p = proof[idx];
+        if (p.first == "L") {
+            h = hash_function(p.second + h);
+        } else {
+            h = hash_function(h + p.second);
+        }
+    }
+
+    return (h == root) ? 0 : 1;
 }
 
 
@@ -431,6 +485,8 @@ int merkle_verify_position(
  */
 
 int merkle_verify_full(const string root, const vector<std::string>& list, function<string(string)> hash_function) {
+    string computed_root = merkle_commit(list, hash_function);
+    return (computed_root == root) ? 0 : 1;
 }
 
 
@@ -490,11 +546,20 @@ int main() {
     cout << "a = " << result2[0] << ", b = " << result2[1] << endl;
     cout << "h(a) = " << test_hash(result2[0]) << ", h(b) = " << test_hash(result2[1]) << endl;
 
-    cout << "\nTesting Merkle Commit:" << endl;
+    cout << "\nTesting Merkle Commit: " << endl;
     string root1 = merkle_commit(test_vec1, SHA256::hashString);
     cout << "Computed Root 1: " << root1 << endl;
     cout << "Expected Root 1: " << test_vec1_merkle_root << endl;
     cout << "Match: " << (root1 == test_vec1_merkle_root ? "PASS" : "FAIL") << endl;
+
+    cout << "\nTesting Merkle Open & Verify Position: " << endl;
+    auto proof2 = merkle_open_position(test_vec1, SHA256::hashString, 2);
+    int pos_res = merkle_verify_position(test_vec1_merkle_root, proof2, SHA256::hashString, 2);
+    cout << "Position Verify Result (0 = PASS): " << pos_res << endl;
+
+    cout << "\nTesting Merkle Full Verify: " << endl;
+    int full_res = merkle_verify_full(test_vec1_merkle_root, test_vec1, SHA256::hashString);
+    cout << "Full Verify Result (0 = PASS): " << full_res << endl;
 
     return 0;
 }
