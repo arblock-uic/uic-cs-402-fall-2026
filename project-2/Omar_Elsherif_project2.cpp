@@ -109,14 +109,12 @@ vector<unsigned int> birthday_attack_1(function<unsigned short(unsigned int)> ha
     // Your code here!
     for (int attempt = 0; attempt < 5; ++attempt) {
         unordered_map<unsigned short, unsigned int> seen;
-        // Randomly generate 350 unsigned integers
         for (int k = 0; k < 350; ++k) {
             unsigned int val = sample_int();
             unsigned short h = hash_function(val);
-            // Check if we already encountered this hash value
+
             auto it = seen.find(h);
             if (it != seen.end()) {
-                // Ensure the two inputs are distinct
                 if (it->second != val) {
                     return {it->second, val};
                 }
@@ -179,6 +177,23 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
     // signatures match the `test_hash` function signature.
     
     // Your code here!
+    unsigned int tort = hash_function(0);
+    unsigned int hare = hash_function(hash_function(0));
+
+    // Loop until tort and hare meet in the cycle
+    while (tort != hare) {
+        tort = hash_function(tort);
+        hare = hash_function(hash_function(hare));
+    }
+
+    tort = 0;
+
+    // Advance both one step at a time until their NEXT steps collide
+    while (hash_function(tort) != hash_function(hare)) {
+        tort = hash_function(tort);
+        hare = hash_function(hare);
+    }
+    return {tort, hare};
 }
 
 
@@ -225,6 +240,26 @@ vector<unsigned int> birthday_attack_2(function<unsigned short(unsigned int)> ha
 
 
 string merkle_commit(const vector<string>& list, function<string(string)> hash_function) {
+    if (list.empty()) return "";
+
+    // Hash each leaf with its string index appended
+    vector<string> current_level;
+    current_level.reserve(list.size());
+    for (size_t i = 0; i < list.size(); ++i) {
+        current_level.push_back(hash_function(list[i] + to_string(i)));
+    }
+
+    // Combine adjacent pairs level-by-level up to the root
+    while (current_level.size() > 1) {
+        vector<string> next_level;
+        next_level.reserve(current_level.size() / 2);
+        for (size_t i = 0; i < current_level.size(); i += 2) {
+            next_level.push_back(hash_function(current_level[i] + current_level[i + 1]));
+        }
+        current_level = std::move(next_level);
+    }
+
+    return current_level[0];
 }
 
  /* 2. The Positional Open Algorithm (20 points)
@@ -444,13 +479,22 @@ const vector<pair<string,string>> test_vec3_proof_of_3 = {
 
 int main() {
     vector<unsigned int> result1 = birthday_attack_1(test_hash);
+    cout << "Birthday Attack 1: " << endl;
     if (!result1.empty()) {
-        cout << "Birthday Attack 1 Found Collision!" << endl;
         cout << "a = " << result1[0] << ", b = " << result1[1] << endl;
-        cout << "h(a) = " << test_hash(result1[0]) << endl;
-        cout << "h(b) = " << test_hash(result1[1]) << endl;
-    } else {
-        cout << "Birthday Attack 1: No collision found." << endl;
+        cout << "h(a) = " << test_hash(result1[0]) << ", h(b) = " << test_hash(result1[1]) << endl;
     }
+
+    cout << "\nBirthday Attack 2: " << endl;
+    vector<unsigned int> result2 = birthday_attack_2(test_hash);
+    cout << "a = " << result2[0] << ", b = " << result2[1] << endl;
+    cout << "h(a) = " << test_hash(result2[0]) << ", h(b) = " << test_hash(result2[1]) << endl;
+
+    cout << "\nTesting Merkle Commit:" << endl;
+    string root1 = merkle_commit(test_vec1, SHA256::hashString);
+    cout << "Computed Root 1: " << root1 << endl;
+    cout << "Expected Root 1: " << test_vec1_merkle_root << endl;
+    cout << "Match: " << (root1 == test_vec1_merkle_root ? "PASS" : "FAIL") << endl;
+
     return 0;
 }
