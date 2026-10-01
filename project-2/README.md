@@ -1,5 +1,5 @@
 
-# UIC CS 402 Fall 2025
+# UIC CS 402 Fall 2026
 
 ## Project 2: Hashing
 In this project, you will have practice with both Hashing problems. 
