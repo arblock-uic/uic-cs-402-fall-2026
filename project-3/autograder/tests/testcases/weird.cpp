@@ -46,5 +46,7 @@ int main() {
     if(wd_trav == wd_ans) PASS();
     else FAIL();
 
+    delete test;
+
     return 0;
 }

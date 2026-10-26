@@ -66,6 +66,11 @@ int main() {
 
     out_file.close();
 
+    delete ans1;
+    delete ans2;
+    delete sol1;
+    delete sol2;
+
     RESULT(100*(score / total_score));
 
     return 0;
