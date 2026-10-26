@@ -1,0 +1,557 @@
+#include <algorithm>
+#include <climits>
+#include <cmath>
+#include <functional>
+#include <iostream>
+#include <limits>
+#include <queue>
+#include <random>
+#include <unordered_map>
+#include <unordered_set>
+
+// be sure to change FIRSTNAME and LASTNAME with your own first and last name
+#include "racing.h"
+
+using namespace std;
+
+/****************
+ * INSTRUCTIONS *
+ ****************
+ *
+ * - Replace all instances of "Firstname_Lastname" with your firstname and
+ *   your last name. This include the .h and .cpp files, along with the
+ *   header guards at the top of the .h file.
+ *
+ * - Implement the appropriate algorithms as described below.
+ *   You must follow the specifications as written below.
+ *
+ * - Certain function signatures may not be modified (as it will affect auto
+ *   grading). These functions will be specified.
+ *
+ * - You are allowed to add helper functions. Be sure to add the appropriate
+ *   function prototypes in "Fistname_Lastname_project2.h."
+ *
+ * - The file "testing.cpp" has various functions you can utilize to test
+ *   your code. You can also add your own tests!
+ *
+ * - If you are working in a group, please modify the comments directly below.
+ *
+ * - IMPORTANT: If you are working in a group, every member is expected to
+ * submit their source code individually.
+ *
+ */
+
+/*** GROUP PROJECT ***/
+// Please list ALL of your other group members as comments below.
+//   Member 1
+//   Member 2
+
+/*** PART 1: Hashing ***/
+
+/* Birthday Attack 1
+ *
+ * 10 Points
+ *
+ * In this problem, you will implement a birthday attack on a simple hash
+ * function that is provided in the header file. The goal will be to find a
+ * collision in the hash function using the Birthday Attack (with at least a 50%
+ * chance of success).
+ *
+ * Assumptions
+ * - The hash function will have a 16 bit output (2 bytes). We will use the
+ * `unsigned short` type as the output type to make things simple.
+ * - The hash function will take `unsigned integers` as input, again to make
+ * things simple.
+ * - Your function will output:
+ *     (a) two inputs a and b such that h(a) = h(b) (a collision), as a list [a,
+ * b], or (b) {} if no collision is found. The output type of the function will
+ * be `vector<unsigned int>`.
+ *
+ * Algorithm Description
+ * - Do the following a small constant number of times (at least 2):
+ *     - Randomly generate 350 unsigned integers. Feel free to use the provided
+ * helper function `sample_int()`.
+ *     - For each of the generated integers:
+ *         - Hash the integer
+ *         - Check if you find a collision. If yes, you can stop and output the
+ * two colliding inputs.
+ * - If no collision is found, output {} (an empty list).
+ *
+ * Hash Function Signature
+ *   unsigned short test_hash(unsigned int input);
+ *
+ */
+
+namespace alex {
+
+unsigned int sample_int() {
+  std::random_device rd;
+  std::mt19937 mt(rd());
+  std::uniform_int_distribution<unsigned int> dist(0);
+  return dist(mt);
+}
+
+vector<Edge> gen_random_digraph(int n) {
+  const unsigned int edge_percent = 20;
+  const unsigned int max_edge_weight = 99;
+  vector<Edge> edges;
+  for (int i = 0; i < n; ++i) {
+    for (int j = 0; j < n; ++j) {
+      if (i != j) {
+        if ((sample_int() % 100) < edge_percent) {
+          edges.push_back(Edge(i, j, 1 + (sample_int() % max_edge_weight)));
+        }
+      }
+    }
+  }
+  return edges;
+}
+std::vector<GridEdge> gen_random_grid(int m, int n) {
+  const unsigned int diag_percent = 25;
+  const unsigned int card_percent = 60;
+  std::vector<GridEdge> edges;
+  for (int y = 0; y < n; ++y) {
+    for (int x = 0; x < m; ++x) {
+      // cardinal edges
+      if (x > 0 && (sample_int() % 100) < card_percent) {
+        edges.push_back(GridEdge(x, y, x - 1, y));
+      }
+      if (x < m - 1 && (sample_int() % 100) < card_percent) {
+        edges.push_back(GridEdge(x, y, x + 1, y));
+      }
+      if (y > 0 && (sample_int() % 100) < card_percent) {
+        edges.push_back(GridEdge(x, y, x, y - 1));
+      }
+      if (y < n - 1 && (sample_int() % 100) < card_percent) {
+        edges.push_back(GridEdge(x, y, x, y + 1));
+      }
+
+      // diagonal edges
+      if (x > 0 && y > 0 && (sample_int() % 100) < diag_percent) {
+        edges.push_back(GridEdge(x, y, x - 1, y - 1));
+      }
+      if (x > 0 && y < n - 1 && (sample_int() % 100) < diag_percent) {
+        edges.push_back(GridEdge(x, y, x - 1, y + 1));
+      }
+      if (x < m - 1 && y > 0 && (sample_int() % 100) < diag_percent) {
+        edges.push_back(GridEdge(x, y, x + 1, y - 1));
+      }
+      if (x < m - 1 && y < n - 1 && (sample_int() % 100) < diag_percent) {
+        edges.push_back(GridEdge(x, y, x + 1, y + 1));
+      }
+    }
+  }
+  return edges;
+}
+
+pair<int, vector<Edge>> gen_random_dag() {
+  const unsigned int min_per_rank = 1;
+  const unsigned int max_per_rank = 3;
+  const unsigned int min_rank = 3;
+  const unsigned int max_rank = 5;
+  const unsigned int edge_percent = 35;
+  const unsigned int abs_max_edge_weight = 20;
+
+  int nodes = 0;
+
+  unsigned int ranks = min_rank + (sample_int() % (max_rank - min_rank + 1));
+
+  vector<Edge> edges;
+
+  for (unsigned int i = 0; i < ranks; ++i) {
+    unsigned int new_nodes =
+        min_per_rank + (sample_int() % (max_per_rank - min_per_rank + 1));
+    for (int j = 0; j < nodes; ++j) {
+      for (int k = 0; k < new_nodes; ++k) {
+        if ((sample_int() % 100) < edge_percent) {
+          int wt = sample_int() % abs_max_edge_weight;
+          edges.push_back(Edge(j, k + nodes, (sample_int() % 2) ? wt : -wt));
+        }
+      }
+    }
+    nodes += new_nodes;
+  }
+  return {nodes, edges};
+}
+
+
+/*** PROJECT 4: Graphs ***/
+
+/* Topological Sorting
+ *
+ * 10 Points
+ *
+ * In this problem, you are tasked with reading the description of a
+ * directed graph as input, then outputting a valid topological
+ * sort of the graph, if one exists.
+ *
+ * Input
+ *  - int n: number of nodes/vertices in the graph, labeled from 0 to n-1
+ *  - vector<Edge> edges: a list of directed edges in the graph
+ *
+ * Output
+ *  - vector<int>: a valid topological sorting of the graph. If
+ *    no topological sorting exists, output an empty list.
+ *    If multiple topological sortings exist, you only need to
+ *    output a single one.
+ *
+ * Note: Edge is a struct defined in Firstname_Lastname_project2.h.
+ *
+ */
+
+vector<int> topological_sort(int n, vector<Edge> edges) {
+  // Your code here!
+  if (n == 0)
+    return {};
+  if (n == 1)
+    return {0};
+
+  std::vector<int> out = {};
+  std::vector<int> indegree(n, 0);
+
+  std::vector<vector<int>> graph(n);
+
+  for (Edge &e : edges) {
+    graph[e.from].push_back(e.to);
+    ++indegree[e.to];
+  }
+  std::queue<int> bfs;
+  int out_size = 0;
+
+  for (int i = 0; i < n; ++i) {
+    if (indegree[i] == 0) {
+      bfs.push(i);
+    }
+  }
+
+  while (!bfs.empty()) {
+    int curr = bfs.front();
+    bfs.pop();
+    out.push_back(curr);
+    ++out_size;
+    for (int &child : graph[curr]) {
+      --indegree[child];
+      if (indegree[child] == 0) {
+        bfs.push(child);
+      }
+    }
+  }
+
+  if (out_size < n)
+    return {};
+  return out;
+}
+
+/* Single Source Shortest Paths on DAGs
+ *
+ * 15 points
+ *
+ * In this problem, you will be given a directed acyclic graph with
+ * arbitrary integer edge weights (i.e., they can be negative!), as
+ * well as a single source node. Your goal will be to output the
+ * shortest distance from the source to every other vertex in the
+ * graph.
+ *
+ * Input
+ *  - int n: number of nodes in the graph, labeled from 0 to n-1
+ *  - vector<Edge> edges: list of weighted directed edges in the graph
+ *  - int source: ID of the source node
+ *
+ * Output
+ *  - vector<int>: vector of size n such that entry i is the distance
+ *    from source to i in the given graph. Use the value "INT_MAX" to
+ *    indicate that there is no path from source to i.
+ *
+ * Algorithm
+ *  - Topological Sorting + BFS is enough to solve this problem.
+ *
+ * Assumptions
+ *  - The graph given as input will always be a DAG
+ *
+ */
+vector<int> dag_single_source(int n, vector<Edge> edges, int source) {
+  if (n == 0)
+    return {};
+  if (n == 1)
+    return {0};
+  std::vector<int> out(n, INT_MAX);
+  out[source] = 0;
+  std::vector<int> topo_sort = topological_sort(n, edges);
+
+  std::vector<std::vector<Edge>> graph(n);
+  for (const Edge &e : edges) {
+    graph[e.from].push_back(e);
+  }
+
+  int i = 0;
+  while (topo_sort[i] != source)
+    ++i;
+  while (i < n) {
+    int curr_node = topo_sort[i];
+    for (const Edge &e : graph[curr_node]) {
+      int child_id = e.to;
+      if (out[curr_node] + e.weight < out[child_id] &&
+          out[curr_node] != INT_MAX) {
+        out[child_id] = out[curr_node] + e.weight;
+      }
+    }
+    ++i;
+  }
+  return out;
+}
+
+/* Dijkstra's Algorithm
+ *
+ * 25 Points
+ *
+ * In this problem, you are simply tasked to implement Dijkstra's Algorithm.
+ *
+ * Input
+ *  - int n: number of nodes in the graph, labeled from 0 to n-1
+ *  - vector<Edge> edges: list of weighted directed edges in the graph
+ *  - int source: ID of the source node
+ *
+ * Output
+ *  - vector<Node>: a list of size n such that entry i contains a Node node
+ *    with the following properties:
+ *      - node.id = i
+ *      - node.path_cost = cost of the shortest path from source to i
+ *      - node.pred = id of the predecessor of i on the shortest path from
+ *        source to i
+ *
+ * Assumptions
+ *  - You are guaranteed that the graph contains only non-negative edges
+ *    (i.e., weight at least 0). For simplicity, all weights will be
+ *    integers.
+ *
+ * Note: Node is a struct defined in Firstname_Lastname_project2.h.
+ */
+
+vector<Node> dijkstras_algorithm(int n, vector<Edge> edges, int source) {
+  // Your code here!
+  // Note: see the LeetCode from in-class for the problem "Cheapest Flights
+  // K stops" to see how you can create a priority_queue with the Node struct.
+
+  if (n == 0)
+    return {};
+  if (n == 1)
+    return {Node(0, 0, -1)};
+
+  std::vector<Node> out(n);
+  for (int i = 0; i < n; ++i) {
+    out[i] = Node(i, INT_MAX, -1);
+  }
+
+  std::vector<vector<Edge>> graph(n);
+  for (const Edge &e : edges) {
+    graph[e.from].push_back(e);
+  }
+
+  std::priority_queue<Node, std::vector<Node>, std::greater<Node>> min_queue;
+  min_queue.push(Node(source, 0, -1));
+
+  while (!min_queue.empty()) {
+    Node curr = min_queue.top();
+    min_queue.pop();
+    if (curr.path_cost >= out[curr.id].path_cost)
+      continue;
+    out[curr.id].path_cost = curr.path_cost;
+    out[curr.id].pred = curr.pred;
+    for (const Edge &e : graph[curr.id]) {
+      min_queue.push(Node(e.to, curr.path_cost + e.weight, e.from));
+    }
+  }
+  return out;
+}
+
+/* A-star Algorithm
+ *
+ * 25 Points
+ *
+ * In this problem, you are asked to implement a modified version of Dijkstras,
+ * known as A* (A-star). The A* algorithm is very similar to Dijkstras, with
+ * two notable differences:
+ *  (a) A* uses some heuristic function h to estimate the distance between any
+ *      two nodes; and
+ *  (b) A* only finds a path from a specified source node and a target node.
+ *
+ * Recall in Dijkstras, the algorithm finds the shortest path from a single
+ * source to all other nodes in the graph.
+ *
+ * Given a source s and a target t, A* is guaranteed to output a shortest path
+ * from s to t as long as the heuristic h underestimates the distance between
+ * any two nodes u,v in the graph. If d(u,v) represents the actual distance
+ * between u and v, then h(u,v) <= d(u,v) for all u,v is enough to guarantee
+ * that A* outputs a shortest path from s to t.
+ *
+ * For this specific version of A*, you will be given two points on a grid (a
+ * start point and an end point). The grid will be specified by a graph, with
+ * nodes being a GridNode (each with their own x and y value on the grid), and
+ * edges being a GridEdge. Each GridEdge has a weight that is of a double type.
+ * A GridEdge will only connect adjacent or diagonal nodes. Formally, for a
+ * GridNode at point (x,y), all of the following edges are possible:
+ *
+ *  - (x+1, y) (cost = 1.0)
+ *  - (x-1, y) (cost = 1.0)
+ *  - (x, y+1) (cost = 1.0)
+ *  - (x, y-1) (cost = 1.0)
+ *  - (x+1, y+1) (cost = 1.5)
+ *  - (x-1, y+1) (cost = 1.5)
+ *  - (x+1, y-1) (cost = 1.5)
+ *  - (x-1, y-1) (cost = 1.5)
+ *
+ * Here, edges all have an implicit movement cost, described above. Moving along
+ * a diagonal edge has a cost of 1.5, while moving along a cardinally adjacent
+ * edge (north, south, east, west) has a cost of 1.
+ *
+ * Note that GridEdge and GridNode are structs defined in
+ * Firstname_Lastname_project2.h.
+ *
+ * Input:
+ *  - int m: number of columns (x-axis)
+ *  - int n: number of rows in the grid (y-axis)
+ *  - vector<GridEdge> edges: list of edges in the graph
+ *  - GridNode source: source node of the algorithm
+ *  - GridNode target: target node of the algorithm
+ *  - function<double(GridNode, GridNode)> h: h is a function which takes as
+ * input two GridNodes and outputs a double. This represents the heruistic_cost
+ *      function for A*.
+ *
+ * Output:
+ *  - vector<GridNode>: a list of nodes containing the path from source to
+ * target. Note that if variable "output" is your output vector, then it must
+ * satisfy the following properties:
+ *                          - if a path from source to target exists, then
+ *                              - output[0] = source
+ *                              - output[output.size()-1] = target
+ *                              - Moreover, output[output.size()-1].path_cost is
+ * the cost of the path from source to target.
+ *                          - if no path from source to target exists, then
+ *                              - output = {} (the empty list)
+ *
+ * Algorithm:
+ *  The algorithm is nearly identical to Dijkstra's Algorithm, with the
+ * following changes.
+ *      - Suppose in Dijkstra's you are currently considering node u and
+ * expanding the frontier along the neighbors of u.
+ *      - Let v be a neighbor of u.
+ *      - In Dijkstra's, you check if u.cost + weight(u,v) < v.cost, where
+ * weight(u,v) is the weight of the edge from u to v. If this is true, you
+ * update v.cost as v.cost = u.cost + weight(u,v), update it in / add it to the
+ * priority queue, and continue.
+ *      - In A*, this is modified as: v.cost = u.cost + weight(u,v) +
+ * heuristic_cost(v, target), where heuristic_cost(v, target) is a heuristic
+ * distance from node v to the target node target.
+ *          - Note you also change the dijkstra's check to
+ * u.cost+weight(u,v)+heuristic_cost(v,target) < v.cost
+ *
+ *  As part of your implementation of A*, you are required to implement the
+ * function heuristic_cost(GridNode start, GridNode dest) defined below. Your
+ * heuristic should never over estimate the distance between any two nodes start
+ * and dest. Remember, in theory you can move north, south, east, west, or along
+ * any diagonal (so long as there is an edge). Use this information to write a
+ * heuristic function that never over estimates the distance.
+ *
+ *
+ * Additional Resources:
+ *  - Wikipedia: https://en.wikipedia.org/wiki/A*_search_algorithm
+ *  - GeeksForGeeks: https://www.geeksforgeeks.org/dsa/a-search-algorithm/
+ *  - Stanford:
+ * https://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
+ *
+ */
+
+// You must implement this function.
+double heuristic_cost(GridNode start, GridNode dest) {
+  // Your code here!
+  return hypot(dest.x - start.x, dest.y - start.y);
+}
+
+// To test your algorithm with the function "heruistic_cost" above,
+// simply pass "heuristic_cost" as a parameter to the function.
+vector<GridNode> a_star_algorithm(int m, int n, vector<GridEdge> edges,
+                                  GridNode source, GridNode target,
+                                  function<double(GridNode, GridNode)> h) {
+  // Your code here!
+  // Be sure to use "h" from the inputs in your implementation; do not
+  // directly use "heruistic_cost" above!
+
+  if (n == 0 || m == 0)
+    return {};
+  if (n == 1 && m == 1)
+    return {GridNode(0, 0, 0, -1, -1)};
+
+  std::vector<vector<GridEdge>> graph(n * m);
+  std::vector<GridNode> nodes(n * m);
+  std::vector<double> dists(n * m);
+
+  // (x,y) -> x + m*y
+  for (int i = 0; i < n * m; ++i) {
+    int x_id = i % m;
+    int y_id = i / m;
+    nodes[i] =
+        GridNode(x_id, y_id, std::numeric_limits<double>::infinity(), -1, -1);
+    dists[i] = std::numeric_limits<double>::infinity();
+  }
+
+  for (const GridEdge &e : edges) {
+    int from_id = e.from_x + m * e.from_y;
+    graph[from_id].push_back(e);
+  }
+
+  std::priority_queue<GridNode, vector<GridNode>, std::greater<GridNode>>
+      min_queue;
+  min_queue.push(GridNode(source.x, source.y, 0, -1, -1));
+  dists[source.x + m * source.y] = 0.0;
+  int target_id = target.x + m * target.y;
+  int curr_id = -1;
+
+  while (!min_queue.empty()) {
+    GridNode curr = min_queue.top();
+    min_queue.pop();
+    curr_id = curr.x + m * curr.y;
+    if (dists[curr_id] >= nodes[curr_id].path_cost) {
+      continue;
+    }
+    curr.path_cost = dists[curr_id];
+    nodes[curr_id] = curr;
+    if (curr_id == target_id)
+      break;
+    for (const GridEdge &e : graph[curr_id]) {
+      double e_wt = 1.5;
+      if (abs(e.from_x - e.to_x) == 0 || abs(e.from_y - e.to_y) == 0)
+        e_wt = 1.0;
+      double cost =
+          curr.path_cost + e_wt; // + h(GridNode(e.to_x, e.to_y), target);
+      if (cost < dists[e.to_x + m * e.to_y]) {
+        dists[e.to_x + m * e.to_y] = cost;
+        min_queue.push(GridNode(e.to_x, e.to_y,
+                                cost + h(GridNode(e.to_x, e.to_y), target),
+                                curr.x, curr.y));
+      }
+    }
+  }
+
+  curr_id = target_id;
+  if (nodes[curr_id].pred_x == -1 || nodes[curr_id].pred_y == -1) {
+    return {};
+  }
+
+  std::vector<GridNode> out = {};
+  // reconstruct path
+  int src_id = source.x + m * source.y;
+  while (curr_id != src_id) {
+    out.push_back(nodes[curr_id]);
+    curr_id = nodes[curr_id].pred_x + m * nodes[curr_id].pred_y;
+  }
+  out.push_back(nodes[src_id]);
+  std::reverse(out.begin(), out.end());
+  // now reconstruct actual path cost
+  // double cost = 0.0;
+  // for(int i = 1; i < out.size(); ++i) {
+  //    cost += (abs(out[i].x - out[i].pred_x) == 0 || abs(out[i].y -
+  //    out[i].pred_y) == 0) ? 1.0 : 1.5; out[i].path_cost = cost;
+  //}
+  return out;
+}
+}; // namespace alex
