@@ -29,6 +29,7 @@ struct ParseTreeNode {
 // function delcarations
 vector<int> weird_traversal(TreeNode* root);
 TreeNode* bits_to_tree(const vector<bool>& bits);
+ParseTreeNode* build_parse_tree(const string& expr);
 
 #endif
 
